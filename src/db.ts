@@ -1,8 +1,8 @@
 import low from "lowdb";
-import FileSync from "lowdb/adapters/FileSync";
+import gcloud from './cloud'
 
-const adapter = new FileSync("db.json");
-const db = low(adapter);
-db.defaults({ opencollective: [] }).write();
+const adapter = new gcloud();
+low(adapter).then((db) => db.defaults({ opencollective: [] })
+.write());
 
-export default db;
+export default low(adapter);

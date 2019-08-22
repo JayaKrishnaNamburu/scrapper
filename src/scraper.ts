@@ -9,14 +9,19 @@ export const getHTML = async (url: string) => {
 };
 
 export const scrapeMoneyDonated = async () => {
-  const result = db
-    .get("opencollective")
-    .find({ date: getDateKey() })
-    .value();
-  if (result) {
-    return result.count;
-  } else {
-    return scrapeAmount();
+  try {
+    const base = await db;
+    const result = base
+      .get("opencollective")
+      .find({ date: getDateKey() })
+      .value();
+    if (result) {
+      return result.count;
+    } else {
+      return scrapeAmount();
+    }
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -26,7 +31,9 @@ const scrapeAmount = async () => {
   const totalAmountDiv = $(".totalAmountSpent");
   const span = await totalAmountDiv.children().first();
   const count = span.get(0).children[0].data;
-  db.get("opencollective")
+  const base = await db;
+  base
+    .get("opencollective")
     .push({ date: getDateKey(), count })
     .write();
   return count;

@@ -1,0 +1,10 @@
+.gcloudignore
+.git
+.gitignore
+node_modules
+yarn-error.log
+tslint.json
+tsconfig.json
+yarn.lock
+src/*ts
+yarn-error.log
